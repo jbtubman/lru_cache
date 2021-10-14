@@ -12,11 +12,13 @@ defmodule LRUCache.RouterTest do
 
   alias LRUCache.{Entry, Impl}
 
+  alias UUID
+
   defp make_entries() do
     [
       Entry.create("foo", "bar"),
-      Entry.create("bing", "bang"),
-      Entry.create("boop", 42)
+      Entry.create(50, "fifty"),
+      Entry.create("forty-two", 42)
     ]
   end
 
@@ -64,7 +66,7 @@ defmodule LRUCache.RouterTest do
 
   describe "get" do
     test "get something not there", ctx do
-      key = "deadbeef"
+      key = UUID.uuid1()
 
       conn =
         conn(:get, "#{@prefix}/#{key}")
@@ -87,6 +89,38 @@ defmodule LRUCache.RouterTest do
       assert conn.state == :sent
       assert conn.status == 200
       assert Poison.decode!(conn.resp_body) == expected_value
+    end
+  end
+
+  describe "put" do
+    test "put something not there", ctx do
+      key = UUID.uuid1()
+      value = UUID.uuid1()
+
+      params = %{key: key, value: value}
+
+      conn =
+        conn(:post, "#{@prefix}", params)
+        |> Router.call(ctx.opts)
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert Poison.decode!(conn.resp_body) == "insert"
+    end
+
+    test "put update something already there", ctx do
+      key = hd(ctx.entries).key
+      value = UUID.uuid1()
+
+      params = %{key: key, value: value}
+
+      conn =
+        conn(:post, "#{@prefix}", params)
+        |> Router.call(ctx.opts)
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert Poison.decode!(conn.resp_body) == "update"
     end
   end
 end

@@ -1,4 +1,8 @@
 defmodule LRUCache.Server do
+  @moduledoc """
+  This is a `GenServer` that is the intermediary between the client API `LRUCache`
+  and the cache implementation `LRUCache.Impl`.
+  """
   use GenServer
   alias LRUCache.Impl
 

@@ -21,7 +21,6 @@ defmodule LRUCache.Router do
 
   get("#{@prefix}/:key") do
     key = Map.get(conn.params, "key")
-    Logger.info("GET #{@prefix}/#{inspect(key)}")
 
     return_model(conn, LRUCache.get(key))
   end
@@ -53,11 +52,5 @@ defmodule LRUCache.Router do
     conn
         |> put_resp_content_type("text/plain")
         |> send_resp(404, "Not Found")
-  end
-
-  defp return_model(conn, {:error, error}) do
-    conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(400, inspect(error))
   end
 end

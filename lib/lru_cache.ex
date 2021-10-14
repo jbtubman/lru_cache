@@ -29,7 +29,7 @@ defmodule LRUCache do
   @type put_result() :: :insert | :update
 
   @doc """
-  Required so that `#{__MODULE__}` can be called as a child of the `LRUCache.Application`.
+  Required so that `#{__MODULE__}` can be called as a child of the `Application`.
   """
   @spec child_spec(any) :: %{
           id: LRUCache,

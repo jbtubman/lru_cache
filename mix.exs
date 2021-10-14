@@ -29,7 +29,8 @@ defmodule LRUCache.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:ex_doc, "~> 0.25.3"},
       {:credo, "~> 1.5"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:uuid, "~> 1.1"}
     ]
   end
 end
