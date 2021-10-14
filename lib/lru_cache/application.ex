@@ -10,6 +10,11 @@ defmodule LRUCache.Application do
     children = [
       # Starts a worker by calling: LRUCache.Worker.start_link(arg)
       # {LRUCache.Worker, arg}
+      {LRUCache, 10},
+      {
+        Plug.Cowboy,
+        scheme: :http, plug: LRUCache.Router, options: [port: 2044]
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
